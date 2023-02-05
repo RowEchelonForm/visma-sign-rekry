@@ -8,8 +8,8 @@
             // - ArgumentProvider
             // - Parser / input string format
             //   - Input string validation
-            // - Validation (somewhat done)
-            // - Calculation
+            // - Validation (done)
+            // - Calculation (done)
 
             // + UNIT TESTS!
 
