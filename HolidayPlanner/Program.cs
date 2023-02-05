@@ -5,7 +5,7 @@
         static void Main(string[] args)
         {
             // TODO:
-            // - ArgumentProvider
+            // - get input from args
             // - Parser / input string format
             //   - Input string validation
             // - Validation (done)
