@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace visma_sign_rekry
+namespace HolidayPlanner
 {
     public class HolidayPlannerValidator // should there be an interface?
     {
@@ -40,7 +40,7 @@ namespace visma_sign_rekry
 
         private ValidationResult ValidatePeriodLength(DateTime startDate, DateTime endDate)
         {
-            if ((endDate - startDate) <= TimeSpan.FromDays(MAX_PERIOD_LENGTH))
+            if (endDate - startDate <= TimeSpan.FromDays(MAX_PERIOD_LENGTH))
                 return new ValidationResult();
             return new ValidationResult(LENGTH_ERROR);
         }
@@ -55,11 +55,11 @@ namespace visma_sign_rekry
         private ValidationResult ValidateHolidayPeridOverlap(DateTime startDate, DateTime endDate)
         {
             // Should never happen if ValidatePeriodLength is called before this with the current requirements
-            if (endDate.Year - startDate.Year > 1) 
+            if (endDate.Year - startDate.Year > 1)
                 return new ValidationResult(OVERLAP_ERROR);
 
             // Should never happen if ValidatePeriodChronology is called before this
-            if (startDate > endDate) 
+            if (startDate > endDate)
                 throw new ArgumentException($"{nameof(startDate)} is greater than {nameof(endDate)}");
 
             List<DateTime> holidayPeriodDates = new() { new DateTime(startDate.Year, HOLIDAY_PERIOD_START_MONTH, HOLIDAY_PERIOD_START_DAY) };
@@ -73,7 +73,7 @@ namespace visma_sign_rekry
 
         private bool IsDateBetween(DateTime dateToCheck, DateTime startDate, DateTime endDate)
         {
-            return (dateToCheck > startDate) && (dateToCheck < endDate);
+            return dateToCheck > startDate && dateToCheck < endDate;
         }
     }
 }

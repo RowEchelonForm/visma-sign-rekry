@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace visma_sign_rekry
+namespace HolidayPlanner
 {
     /// <summary>
     /// Class for getting Finnish national holidays.
@@ -32,14 +32,19 @@ namespace visma_sign_rekry
 
 
         /// <summary>
-        /// Gets a list of Finnish national holidays between <paramref name="startDate"/> and <paramref name="endDate"/>.
+        /// Gets a list of Finnish national holidays between <paramref name="startDate"/> 
+        /// and <paramref name="endDate"/>.
         /// </summary>
         /// <param name="startDate">Start date of the period.</param>
         /// <param name="endDate">End date of the period.</param>
-        /// <returns>List of national holidays in period between <paramref name="startDate"/> and <paramref name="endDate"/>.</returns>
+        /// <returns>
+        /// List of national holidays in period between 
+        /// <paramref name="startDate"/> and <paramref name="endDate"/>.
+        /// </returns>
         /// <exception cref="ArgumentException">
         /// Thrown if <paramref name="startDate"/> is greater than <paramref name="endDate"/> OR 
-        /// the period between <paramref name="startDate"/> and <paramref name="endDate"/> is in a range that is not supported.
+        /// the period between <paramref name="startDate"/> and <paramref name="endDate"/> 
+        /// is in a range that is not supported.
         /// </exception>
         public List<DateTime> GetNationalHolidaysBetween(DateTime startDate, DateTime endDate)
         {
@@ -51,7 +56,7 @@ namespace visma_sign_rekry
             foreach (int year in yearsToCheck)
             {
                 var yearlyHolidays = GetHolidaysForYear(year)
-                    .Where(holiday => (holiday >= startDate) && (holiday <= endDate));
+                    .Where(holiday => holiday >= startDate && holiday <= endDate);
                 holidays.AddRange(yearlyHolidays);
             }
             return holidays;
@@ -120,7 +125,7 @@ namespace visma_sign_rekry
         {
             // Midsummer eve is the Friday between 19th and 25th of June
             // Midsummer day is the Saturday after that
-            
+
             var dateToCheck = new DateTime(year, 6, 19);
             while (dateToCheck.DayOfWeek != DayOfWeek.Friday)
                 dateToCheck = dateToCheck.AddDays(1);

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace visma_sign_rekry
+namespace HolidayPlanner
 {
     public enum ValidationStatus
     {
@@ -73,7 +73,7 @@ namespace visma_sign_rekry
         /// method might be used to get the actual (potentially translated) error messages.
         /// </remarks>
         /// <returns>A list of error messages from the validation.</returns>
-        public List<string> GetErrorMessages() 
+        public List<string> GetErrorMessages()
             => _errors.ToList();  // create a copy so that the original list can't be modified by the caller later
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace visma_sign_rekry
+﻿namespace HolidayPlanner
 {
     internal class Program
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace visma_sign_rekry
+namespace HolidayPlanner
 {
     /// <summary>
     /// Interface for classes that can get national holidays for a certain locale.
@@ -22,7 +22,10 @@ namespace visma_sign_rekry
         /// </summary>
         /// <param name="startDate">Start date of the period.</param>
         /// <param name="endDate">End date of the period.</param>
-        /// <returns>List of national holidays in period between <paramref name="startDate"/> and <paramref name="endDate"/>.</returns>
+        /// <returns>
+        /// List of national holidays in period between 
+        /// <paramref name="startDate"/> and <paramref name="endDate"/>.
+        /// </returns>
         /// <exception cref="ArgumentException">
         /// Thrown if parameters <paramref name="startDate"/> and/or <paramref name="endDate"/> are invalid.
         /// </exception>
