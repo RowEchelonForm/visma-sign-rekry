@@ -28,7 +28,7 @@ namespace HolidayPlanner
         public int ErrorCount { get => _errors.Count; }
 
 
-        private readonly List<string> _errors = new();
+        private readonly List<ValidationError> _errors = new();
 
 
         /// <summary>
@@ -40,10 +40,21 @@ namespace HolidayPlanner
         }
 
         /// <summary>
-        /// Initializes a new <see cref="ValidationResult"/> object with error messages
-        /// and <see cref="Status"/> <see cref="ValidationStatus.Error"/>.
+        /// Initializes a new <see cref="ValidationResult"/> object with error messages 
+        /// and <see cref="Status"/> <see cref="ValidationStatus.Error"/> 
+        /// if <paramref name="errors"/> contains any items.
         /// </summary>
         public ValidationResult(params string[] errors)
+        {
+            AddErrors(errors);
+        }
+
+        /// <summary>
+        /// Initializes a new <see cref="ValidationResult"/> object with error messages 
+        /// and <see cref="Status"/> <see cref="ValidationStatus.Error"/> 
+        /// if <paramref name="errors"/> contains any items.
+        /// </summary>
+        public ValidationResult(params ValidationError[] errors)
         {
             AddErrors(errors);
         }
@@ -51,29 +62,48 @@ namespace HolidayPlanner
 
         /// <summary>
         /// Adds new error message(s) to this validation result. <see cref="Status"/> 
-        /// will be <see cref="ValidationStatus.Error"/> after calling this.
+        /// will be <see cref="ValidationStatus.Error"/> after calling this 
+        /// if <paramref name="errorMessages"/> contains items.
         /// </summary>
-        /// <param name="errors"></param>
-        public void AddErrors(params string[] errors)
+        /// <param name="errorMessages">One of more error messages.</param>
+        /// <exception cref="ArgumentException"><paramref name="errorMessages"/> contains null items.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="errorMessages"/> is null.</exception>
+        public void AddErrors(params string[] errorMessages)
         {
+            if (errorMessages == null)
+                throw new ArgumentNullException(nameof(errorMessages));
+            if (errorMessages.Any(error => error == null))
+                throw new ArgumentException($"{nameof(errorMessages)} array contains null value(s)");
+
+            AddErrors(errorMessages.Select(msg => new ValidationError(msg)).ToArray());
+        }
+
+        /// <summary>
+        /// Adds new error(s) to this validation result. <see cref="Status"/> 
+        /// will be <see cref="ValidationStatus.Error"/> after calling this 
+        /// if <paramref name="errors"/> contains items.
+        /// </summary>
+        /// <param name="errors">One or more error objects.</param>
+        /// <exception cref="ArgumentException"><paramref name="errors"/> contains null items.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="errors"/> is null.</exception>
+        public void AddErrors(params ValidationError[] errors)
+        {
+            if (errors == null)
+                throw new ArgumentNullException(nameof(errors));
             if (errors.Any(error => error == null))
-                throw new ArgumentException($"{nameof(errors)} array contains null error(s)");
+                throw new ArgumentException($"{nameof(errors)} array contains null value(s)");
 
             _errors.AddRange(errors);
-            Status = ValidationStatus.Error;
+
+            if (errors.Length > 0)
+                Status = ValidationStatus.Error;
         }
 
         /// <summary>
         /// Gets all error messages in this <see cref="ValidationResult"/>.
         /// </summary>
-        /// <remarks>
-        /// This method is not very useful ATM as <see cref="_errors"/> might as well be a 
-        /// property with a public getter. However, a future implementation work with some 
-        /// kinds of error codes in method <see cref="AddErrors(string[])"/>. Then, this 
-        /// method might be used to get the actual (potentially translated) error messages.
-        /// </remarks>
         /// <returns>A list of error messages from the validation.</returns>
         public List<string> GetErrorMessages()
-            => _errors.ToList();  // create a copy so that the original list can't be modified by the caller later
+            => _errors.Select(error => error.ToString()).ToList();
     }
 }
