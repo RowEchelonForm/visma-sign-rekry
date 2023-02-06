@@ -67,11 +67,8 @@ namespace HolidayPlanner
         /// </summary>
         /// <param name="errorMessages">One of more error messages.</param>
         /// <exception cref="ArgumentException"><paramref name="errorMessages"/> contains null items.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="errorMessages"/> is null.</exception>
         public void AddErrors(params string[] errorMessages)
         {
-            if (errorMessages == null)
-                throw new ArgumentNullException(nameof(errorMessages));
             if (errorMessages.Any(error => error == null))
                 throw new ArgumentException($"{nameof(errorMessages)} array contains null value(s)");
 
@@ -85,11 +82,8 @@ namespace HolidayPlanner
         /// </summary>
         /// <param name="errors">One or more error objects.</param>
         /// <exception cref="ArgumentException"><paramref name="errors"/> contains null items.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="errors"/> is null.</exception>
         public void AddErrors(params ValidationError[] errors)
         {
-            if (errors == null)
-                throw new ArgumentNullException(nameof(errors));
             if (errors.Any(error => error == null))
                 throw new ArgumentException($"{nameof(errors)} array contains null value(s)");
 

@@ -19,7 +19,7 @@ namespace HolidayPlanner
 
         public ValidationError(string errorMessage)
         {
-            ErrorMessage = errorMessage ?? throw new ArgumentNullException(nameof(errorMessage));
+            ErrorMessage = errorMessage;
         }
 
         public override string ToString()
