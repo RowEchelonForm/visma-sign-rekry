@@ -8,13 +8,13 @@ namespace HolidayPlanner
 {
     public class HolidayPlannerValidator : IHolidayPlannerValidator
     {
-        private const int MAX_PERIOD_LENGTH = 50;
+        private const int MAX_PERIOD_LENGTH_DAYS = 50;
         private const int HOLIDAY_PERIOD_START_MONTH = 4;
         private const int HOLIDAY_PERIOD_START_DAY = 1;
 
-        private const string LENGTH_ERROR = "Period length is invalid";
-        private const string CHORONOLOGY_ERROR = "End date < start date";
-        private const string OVERLAP_ERROR = "Input period is on more than one holiday periods";
+        private const string LENGTH_ERROR = "Period length of {0} days greater than the maximum allowed {1} days";
+        private const string CHORONOLOGY_ERROR = "Start date is greater than end date ({0} < {1})";
+        private const string OVERLAP_ERROR = "Input period from {0} to {1} is on more than one holiday periods";
 
 
 
@@ -41,23 +41,26 @@ namespace HolidayPlanner
 
         private ValidationError? ValidatePeriodLength(DateTime startDate, DateTime endDate)
         {
-            if (endDate - startDate <= TimeSpan.FromDays(MAX_PERIOD_LENGTH))
+            var periodLength = endDate - startDate;
+            var maxPeriod = TimeSpan.FromDays(MAX_PERIOD_LENGTH_DAYS);
+
+            if (periodLength <= maxPeriod)
                 return null;
-            return new ValidationError(LENGTH_ERROR);
+            return new ValidationError(string.Format(LENGTH_ERROR, periodLength.TotalDays, MAX_PERIOD_LENGTH_DAYS));
         }
 
         private ValidationError? ValidatePeriodChronology(DateTime startDate, DateTime endDate)
         {
             if (endDate >= startDate)
                 return null;
-            return new ValidationError(CHORONOLOGY_ERROR);
+            return new ValidationError(string.Format(CHORONOLOGY_ERROR, startDate, endDate));
         }
 
         private ValidationError? ValidateHolidayPeridOverlap(DateTime startDate, DateTime endDate)
         {
             // Should never happen if ValidatePeriodLength is called before this with the current requirements
             if (endDate.Year - startDate.Year > 1)
-                return new ValidationError(OVERLAP_ERROR);
+                return new ValidationError(string.Format(OVERLAP_ERROR, startDate, endDate));
 
             // Should never happen if ValidatePeriodChronology is called before this
             if (startDate > endDate)
@@ -68,7 +71,7 @@ namespace HolidayPlanner
                 holidayPeriodDates.Add(new DateTime(endDate.Year, HOLIDAY_PERIOD_START_MONTH, HOLIDAY_PERIOD_START_DAY));
 
             if (holidayPeriodDates.Any(holidayPeriodDate => IsDateBetween(holidayPeriodDate, startDate, endDate)))
-                return new ValidationError(OVERLAP_ERROR);
+                return new ValidationError(string.Format(OVERLAP_ERROR, startDate, endDate));
 
             return null;
         }
