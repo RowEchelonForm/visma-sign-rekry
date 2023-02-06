@@ -6,12 +6,32 @@ using System.Threading.Tasks;
 
 namespace HolidayPlanner
 {
+    /// <summary>
+    /// Interface for holiday planner implementations.
+    /// </summary>
     public interface IHolidayPlanner
     {
-        // Should there be method(s) that take string arguments
+        /// <summary>
+        /// Calculate the number of vacation that are consumed if one is on vacation in the 
+        /// date period defined in <paramref name="dateRangeString"/>.
+        /// </summary>
+        /// <param name="dateRangeString"></param>
+        /// <returns>The number of vacation days that have to be consumed.</returns>
+        /// <exception cref="ArgumentException">
+        /// Thrown if <paramref name="dateRangeString"/> is invalid.
+        /// </exception>
+        int CalculateSpentHolidays(string dateRangeString);
 
-        // Should there be a method that returns a list of dates that use up vacation days (instead of just the number of them)
+        /// <summary>
+        /// Calculate the number of vacation that are consumed if one is on vacation in the 
+        /// period between <paramref name="startDate"/> and <paramref name="endDate"/>.
+        /// </summary>
+        /// <param name="startDate">First date of the period (included as a vacation day).</param>
+        /// <param name="endDate">Final date of the period (included as a vacation day).</param>
+        /// <returns>The number of vacation days that have to be consumed.</returns>
+        /// <exception cref="ArgumentException">
+        /// Thrown if <paramref name="startDate"/> or <paramref name="endDate"/> is invalid.
+        /// </exception>
         int CalculateSpentHolidays(DateTime startDate, DateTime endDate);
-
     }
 }

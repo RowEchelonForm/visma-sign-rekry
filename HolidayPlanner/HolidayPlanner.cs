@@ -13,24 +13,34 @@ namespace HolidayPlanner
     {
         private readonly INationalHolidayProvider _nationalHolidayProvider;
         private readonly IHolidayPlannerValidator _validator;
+        private readonly DateRangeParser _parser;
 
 
-        public HolidayPlanner(INationalHolidayProvider nationalHolidayProvider, IHolidayPlannerValidator validator)
+        public HolidayPlanner(
+            INationalHolidayProvider nationalHolidayProvider, 
+            IHolidayPlannerValidator validator,
+            DateRangeParser parser)
         {
             _nationalHolidayProvider = nationalHolidayProvider;
             _validator = validator;
+            _parser = parser;
         }
 
-        /// <summary>
-        /// Calculate the number of vacation that are consumed if one is on vacation in the 
-        /// period between <paramref name="startDate"/> and <paramref name="endDate"/>.
-        /// </summary>
-        /// <param name="startDate">First date of the period (included as a vacation day).</param>
-        /// <param name="endDate">Final date of the period (included as a vacation day).</param>
-        /// <returns>The number of vacation days that have to be consumed.</returns>
-        /// <exception cref="ArgumentException">
-        /// Thrown if <paramref name="startDate"/> or <paramref name="endDate"/> is invalid.
-        /// </exception>
+        public int CalculateSpentHolidays(string dateRangeString)
+        {
+            DateTime startDate, endDate;
+            try
+            {
+                (startDate, endDate) = _parser.Parse(dateRangeString);
+            }
+            catch (FormatException ex)
+            {
+                throw new ArgumentException($"{nameof(dateRangeString)} \"{dateRangeString}\" is invalid", ex);
+            }
+
+            return CalculateSpentHolidays(startDate, endDate);
+        }
+
         public int CalculateSpentHolidays(DateTime startDate, DateTime endDate)
         {
             // Strip potential time data out because it's irrelevant and could might cause issues
