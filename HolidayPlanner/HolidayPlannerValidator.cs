@@ -88,14 +88,20 @@ namespace HolidayPlanner
             if (endDate.Year != startDate.Year)
                 holidayPeriodDates.Add(new DateTime(endDate.Year, HOLIDAY_PERIOD_START_MONTH, HOLIDAY_PERIOD_START_DAY));
 
-            if (holidayPeriodDates.Any(holidayPeriodDate => IsDateBetween(holidayPeriodDate, startDate, endDate)))
+            if (holidayPeriodDates.Any(holidayPeriodDate => DoesDateOverlapRange(holidayPeriodDate, startDate, endDate)))
                 return new ValidationError(string.Format(OVERLAP_ERROR, startDate, endDate));
 
             return null;
         }
 
-        private bool IsDateBetween(DateTime dateToCheck, DateTime startDate, DateTime endDate)
+        private bool DoesDateOverlapRange(DateTime dateToCheck, DateTime startDate, DateTime endDate)
         {
+            // Note: startDate is not inclusive here but endDate is.
+            // This is because this is used to check if date range 
+            // from startDate to endDate goes over dateToCheck. 
+            // Therefore, we return true only if startDate < endDate
+            // and dateToCheck is between them. I.e. return false 
+            // if all three DateTime objects have the same date value.
             return dateToCheck > startDate && dateToCheck <= endDate;
         }
     }

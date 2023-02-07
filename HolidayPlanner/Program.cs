@@ -26,9 +26,6 @@ namespace HolidayPlanner
                 return 1;
             }
             return 0;
-
-            // TODO:
-            // UNIT TESTS!
         }
     }
 }

@@ -64,7 +64,7 @@ namespace HolidayPlanner
         /// <exception cref="FormatException">
         /// Thrown if <paramref name="input"/> is in an invalid format and cannot be parsed.
         /// </exception>
-        public (DateTime, DateTime) Parse(string input)
+        public virtual (DateTime, DateTime) Parse(string input)
         {
             var splitOptions = StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries;
             var parts = input.Split(_rangeSeparators.ToArray(), splitOptions);
