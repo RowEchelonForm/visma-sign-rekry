@@ -8,6 +8,7 @@ namespace HolidayPlanner
 {
     public class HolidayPlannerValidator : IHolidayPlannerValidator
     {
+        // These values could be public properties in a more configurable implementation
         private const int MAX_PERIOD_LENGTH_DAYS = 50;
         private const int HOLIDAY_PERIOD_START_MONTH = 4;
         private const int HOLIDAY_PERIOD_START_DAY = 1;
@@ -17,7 +18,24 @@ namespace HolidayPlanner
         private const string OVERLAP_ERROR = "Input period from {0} to {1} is on more than one holiday periods";
 
 
-
+        /// <summary>
+        /// Validates the holiday period from <paramref name="startDate"/> to <paramref name="endDate"/>.
+        /// </summary>
+        /// <param name="startDate">Start date of the period.</param>
+        /// <param name="endDate">End date of the period.</param>
+        /// <remarks>
+        /// Parameters <paramref name="startDate"/> and <paramref name="endDate"/> are valid if
+        /// <list type="bullet">
+        /// <item>The timespan from <paramref name="startDate"/> to <paramref name="endDate"/> is at most 50 days.</item>
+        /// <item><paramref name="startDate"/> is not greater than <paramref name="endDate"/>.</item>
+        /// <item>The period from <paramref name="startDate"/> to <paramref name="endDate"/> does not overlap 
+        /// mulitple holiday periods; holiday periods are one year long from 1st of April to 31st of March next year.</item>
+        /// </list>
+        /// </remarks>
+        /// <returns>
+        /// <see cref="ValidationResult"/> object where <see cref="ValidationResult.Status"/> 
+        /// is <see cref="ValidationStatus.Success"/> if there were no validation errors.
+        /// </returns>
         public ValidationResult ValidateHolidayPeriod(DateTime startDate, DateTime endDate)
         {
             ValidationResult result = new();
@@ -78,7 +96,7 @@ namespace HolidayPlanner
 
         private bool IsDateBetween(DateTime dateToCheck, DateTime startDate, DateTime endDate)
         {
-            return dateToCheck > startDate && dateToCheck < endDate;
+            return dateToCheck > startDate && dateToCheck <= endDate;
         }
     }
 }
