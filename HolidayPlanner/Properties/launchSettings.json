@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "HolidayPlanner": {
+      "commandName": "Project",
+      "commandLineArgs": "1.1.2022 - 1.2.2022"
+    }
+  }
+}
