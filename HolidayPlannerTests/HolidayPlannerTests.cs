@@ -6,12 +6,6 @@ namespace HolidayPlanner.Tests
     [TestClass()]
     public class HolidayPlannerTests
     {
-        // TODO: write readme
-
-        // TODO: make repo public
-
-        // TODO: send email
-
         #region CalculateSpentHolidays DateTime params
 
         #region Ok without national holidays
